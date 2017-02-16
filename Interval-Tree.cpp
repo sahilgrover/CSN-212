@@ -95,8 +95,56 @@ interval search (Node *n,interval x)
 }
 
 
-void delete_node (interval i)
+Node * delete_node (Node * n,interval x)
 {
+	Node * temp;
+
+	if(n == NULL)
+	{
+		return n;
+	}
+
+	if (x.LB < n->i.LB) 
+	{
+		n->left = delete_node(n->left,x);
+		//If low of current node is higher node to be
+		// deleted is in left subtree
+	}
+	else if (x.LB > n->i.LB)
+	{
+		n->right = delete_node(n->right,x);
+		//If low of current node is lower node to be
+		// deleted is in right subtree
+	}
+
+	//Node to be deleted has been found
+	else
+	{
+		//If the node has only left child
+		if(n->left == NULL)
+		{
+			temp = n->right;
+			n = NULL;
+			return temp;
+		}
+
+		//If the node has only right child
+		else if(n->right == NULL)
+		{
+			temp = n-> left;
+			n = NULL;
+			return temp;
+		}
+
+		//If the node has both children
+		//we find it's successor in inorder traversal and replace it
+		temp = successor(n->right);
+		n->i =temp->i;
+		n->right = delete_node(n->right,temp->i);
+
+		n = Max_update (n);
+		return n;
+	}
 
 } 
 
