@@ -94,6 +94,35 @@ interval search (Node *n,interval x)
 	}
 }
 
+Node * successor(Node * n)
+{
+	Node * t = n;
+	while (t->left != NULL)
+		t = t->left;
+	return t;
+}
+
+//Function to update Max value after deletion
+Node * Max_update (Node * n)
+{
+	if(n== NULL) return n;
+	Max_update(n->left);
+	Max_update(n->right);
+
+	if (n->right != NULL)
+	{
+		if (n->left != NULL )
+			n->Max = max(n->left->Max, n->right->Max , n->i.UB);
+		else n->Max = max(n->right->Max , n->i.UB);
+	}
+	else
+	{
+		if (n->left != NULL )
+			n->Max = max(n->left->Max , n->i.UB);
+		else n->Max = n->i.UB;
+	}
+	return n;
+}
 
 Node * delete_node (Node * n,interval x)
 {
