@@ -150,7 +150,7 @@ Node * delete_node (Node * n,interval x)
 	else
 	{
 		//If the node has only left child
-		if(n->left == NULL)
+		if(n->left == NULL && n->right != NULL)
 		{
 			temp = n->right;
 			n = NULL;
@@ -196,5 +196,40 @@ void traverse(Node *root)
 
 int main()
 {
-    Z = make_interval(0,-1);   
+    Z = make_interval(0,-1);  
+    interval ints[] = {{15, 20}, {10, 30}, {17, 19}, {5, 20}, {12, 15}, {30, 40} };
+    int n = sizeof(ints)/sizeof(ints[0]);
+    Node *root = NULL;
+    for (int i = 0; i < n; i++)
+        root = insert_node(root, ints[i]);
+ 
+    cout << "Inorder traversal of Interval Tree is\n";
+    traverse(root);
+      
+ 	interval   x = make_interval(14, 16);
+ 
+    cout << "\nSearch for interval [" << x.LB << "," << x.UB << "]";
+    interval res = search(root, x);
+    if (res == Z)
+        cout << "\nNo Overlapping Interval";
+    else
+        cout << "\nOverlaps with [" << res.LB << ", " << res.UB << "]";
+    x = make_interval(21, 23);
+ 
+    cout << "\nSearch for interval [" << x.LB << "," << x.UB << "]";
+    res = search(root, x);
+    if (res == Z)
+        cout << "\nNo Overlapping Interval";
+    else
+        cout << "\nOverlaps with [" << res.LB << ", " << res.UB << "]";
+   	 x = make_interval(10,30);
+    Node * ptr = delete_node(root,x);
+    delete ptr;
+    traverse(root);
+    
+    x = make_interval(30,40);
+    ptr = delete_node(root,x);
+    delete ptr;
+    traverse(root);
+    return 0;
 }
