@@ -56,10 +56,44 @@ Node * insert_node (Node *root, interval x)
     //Updated root node is returned
 }
 
-interval * search (Node *root,interval i)
+//Function to check if two intervals overlap
+bool isOverlap (interval i1, interval i2)
 {
-
+	if(i2.LB > i1.UB || i2.UB < i1.LB) 
+		return false;
+	return true;
 }
+
+interval Z;
+
+//Search function to return the first interval which overlaps 
+// with the query interval
+interval * search (Node *n,interval x)
+{
+	if(n == NULL)
+	{
+		return Z; 
+		//Z is a dummy interval when search interval is not found.
+	}
+	if(isOverlap(n->i,x)) //If overlap occurs return the node
+	{
+		return n->i;
+	}
+	if(n->left != NULL)		
+	// If left tree is non-empty and within range check left subtree
+	{
+		if(n->left->Max >= x.LB)
+		{
+			return search(n->left,x);
+		}
+	}
+	else
+	{
+		return search(n->right,x);
+		//Otherwise check right subtree
+	}
+}
+
 
 void delete_node (interval i)
 {
@@ -68,5 +102,6 @@ void delete_node (interval i)
 
 int main()
 {
-
+	Z = make_interval(0,-1);
 }
+
