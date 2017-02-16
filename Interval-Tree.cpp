@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#typedef pair<int,int> interval;
+typedef pair<int,int> interval;
 #define make_interval make_pair
 #define UB second //Upper Bound of Interval
 #define LB first  //Lower Bound of Interval
@@ -19,7 +19,7 @@ Node * make_node (interval x)
 {
 	Node *temp = new Node;
     temp->i = x;
-    temp->Max = i.UB;
+    temp->Max = x.UB;
     temp->left = NULL;
     temp->right = NULL;
     return temp;
@@ -36,7 +36,7 @@ Node * insert_node (Node *root, interval x)
 	l=root->i.LB;
 	r=root->i.UB;
 
-    if (l > x.low)
+    if (l > x.LB)
         root->left = insert_node (root->left, x);
     //If Lower Bound of root is greater than lower bound of 
     //inserted interval then the new node is inserted in
@@ -68,7 +68,7 @@ interval Z;
 
 //Search function to return the first interval which overlaps 
 // with the query interval
-interval * search (Node *n,interval x)
+interval search (Node *n,interval x)
 {
 	if(n == NULL)
 	{
@@ -100,6 +100,10 @@ void delete_node (interval i)
 
 } 
 
+void print_node (Node * root)
+{
+	cout<<" [ " << root->i.LB << ", " << root->i.UB << " ] , Max = <" << root->Max << ">\n";
+}
 void traverse(Node *root)
 {
 	if(root == NULL)
@@ -108,33 +112,12 @@ void traverse(Node *root)
 	}
 
 	traverse(root->left);
-	cout<<" [ " << root->i.LB << ", " << root->i.UB << " ] , Max = <" << root->Max << ">\n";
+	print_node(root);
 	traverse(root->right);
 }
 
 
 int main()
 {
-    // Let us create interval tree shown in above figure
-    Z = make_interval(0,-1);
-    interval ints[] = {{15, 20}, {10, 30}, {17, 19},
-        {5, 20}, {12, 15}, {30, 40}
-    };
-    int n = sizeof(ints)/sizeof(ints[0]);
-    Node *root = NULL;
-    for (int i = 0; i < n; i++)
-        root = insert(root, ints[i]);
- 
-    cout << "Inorder traversal of constructed Interval Tree is\n";
-    inorder(root);
- 
-    interval x = make_interval(6, 7);
- 
-    cout << "\nSearching for interval [" << x.low << "," << x.high << "]";
-    Interval *res = overlapSearch(root, x);
-    if (res == Z)
-        cout << "\nNo Overlapping Interval";
-    else
-        cout << "\nOverlaps with [" << res->low << ", " << res->high << "]";
-    return 0;
+    Z = make_interval(0,-1);   
 }
