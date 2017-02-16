@@ -100,8 +100,41 @@ void delete_node (interval i)
 
 } 
 
-int main()
+void traverse(Node *root)
 {
-	Z = make_interval(0,-1);
+	if(root == NULL)
+	{
+		return;
+	}
+
+	traverse(root->left);
+	cout<<" [ " << root->i.LB << ", " << root->i.UB << " ] , Max = <" << root->Max << ">\n";
+	traverse(root->right);
 }
 
+
+int main()
+{
+    // Let us create interval tree shown in above figure
+    Z = make_interval(0,-1);
+    interval ints[] = {{15, 20}, {10, 30}, {17, 19},
+        {5, 20}, {12, 15}, {30, 40}
+    };
+    int n = sizeof(ints)/sizeof(ints[0]);
+    Node *root = NULL;
+    for (int i = 0; i < n; i++)
+        root = insert(root, ints[i]);
+ 
+    cout << "Inorder traversal of constructed Interval Tree is\n";
+    inorder(root);
+ 
+    interval x = make_interval(6, 7);
+ 
+    cout << "\nSearching for interval [" << x.low << "," << x.high << "]";
+    Interval *res = overlapSearch(root, x);
+    if (res == Z)
+        cout << "\nNo Overlapping Interval";
+    else
+        cout << "\nOverlaps with [" << res->low << ", " << res->high << "]";
+    return 0;
+}
